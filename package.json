@@ -4,7 +4,8 @@
   "description": "",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "swc src -d dist && node dist"
+    "dev": "npx nodemon --exec \"swc src -d dist && node dist\"",
+    "build": "swc src -d dist"
   },
   "type": "module",
   "author": "",

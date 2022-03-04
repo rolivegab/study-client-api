@@ -1,0 +1,9 @@
+{
+    "jsc": {
+        "parser": {
+            "syntax": "typescript",
+            "topLevelAwait": false
+        },
+        "target": "es2015"
+    }
+}

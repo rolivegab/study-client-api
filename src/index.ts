@@ -2,15 +2,6 @@ import Express from 'express'
 import z from 'zod'
 import CPF from 'cpf'
 
-const app = Express()
-
-interface User {
-  id: number
-  name: string
-  birthdate: Date
-  cpf: string
-}
-
 const userValidator = z.object({
   id: z.number({required_error: 'id is required'}),
   name: z.string({required_error: 'name is required'}).nonempty({message: 'name can\'t be empty'}),
@@ -18,7 +9,9 @@ const userValidator = z.object({
   cpf: z.string({required_error: 'cpf is required'}).refine(cpf => CPF.isValid(cpf))
 })
 
-const users: User[] = []
+const users: z.infer<typeof userValidator>[] = []
+
+const app = Express()
 
 app.use(Express.json())
 
@@ -31,9 +24,9 @@ app.get('/users', (_, res) => {
 })
 
 app.post('/user', (req, res) => {
-  const dadosDoUsuario = userValidator.parse(req.body)
-  users.push(dadosDoUsuario)
   try {
+    const dadosDoUsuario = userValidator.parse(req.body)
+    users.push(dadosDoUsuario)
     res.json('Usuário "' + dadosDoUsuario.name + '" criado com sucesso!')
   } catch (err) {
     res.json(err)
